@@ -1,8 +1,6 @@
 
-export class WebProxy {
+export class WorkerProxy {
     constructor(options) {
         this.options = options
     }
-
-    
 }
