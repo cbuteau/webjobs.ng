@@ -6,7 +6,7 @@ import TroubleMaker from './TroubleMaker.js'
 class Boss {
   constructor() {}
 
-  create(options) {
+  create(options: object) {
     let that = this;
     return new Promise(function(resolve, reject) {
       let preps = [];

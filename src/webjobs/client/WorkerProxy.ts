@@ -4,7 +4,7 @@ import MessageIds from './MessageIds.js';
 import WorkerStates from './WorkerStates.js';
 
 
-var currentIds = [];
+var currentIds: Array<string> = [];
 
 function getId() {
   return '' + Math.random().toString(36).substr(2, 9);
@@ -25,7 +25,7 @@ const DEFAULT_SETTINGS = {
 };
 
 export class WorkerProxy {
-    constructor(options) {
+    constructor(options: object) {
         this.options = options
 
         this.messages  = [];
@@ -89,7 +89,7 @@ export class WorkerProxy {
         }
     }
 
-    onMessage(e) {
+    onMessage(e: any) {
         var data = e.data;
         console.info('onmessage()', data);
         switch (data.msg) {
