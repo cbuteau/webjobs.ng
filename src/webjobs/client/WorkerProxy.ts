@@ -30,8 +30,8 @@ export class WorkerProxy {
 
         this.messages  = [];
         this.callbacks = [];
-        this._boundOnMessage = this.onMessage.bind(this);
-        this._boundOnError = this.onError.bind(this);
+        this.#boundOnMessage = this.onMessage.bind(this);
+        this.#boundOnError = this.onError.bind(this);
         var that = this;
         this.options = options;
     
@@ -68,10 +68,10 @@ export class WorkerProxy {
           }
     
           this.settings._worker = new Worker(pathToBase, {type:'module'});
-          this.settings._worker.onmessage = this._boundOnMessage;
-          this.settings._worker.onerror = this._boundOnError;
+          this.settings._worker.onmessage = this.#boundOnMessage;
+          this.settings._worker.onerror = this.#boundOnError;
           var that = this;
-          this._promise = new Promise(function(resolve, reject) {
+          this.#promise = new Promise(function(resolve, reject) {
             that.reject = reject;
             that.resolve = resolve;
           });
@@ -141,12 +141,12 @@ export class WorkerProxy {
         }
       }
     
-      onError(e) {
+      onError(e: any) {
         console.error(e);
       }
     
       getPromise() {
-        return this._promise;
+        return this.#promise;
       }
     
       subscribe(eventId, callback) {
@@ -154,7 +154,7 @@ export class WorkerProxy {
         this.callbacks.push(callback);
       }
     
-      updateState(newState) {
+      updateState(newState: WorkerStates) {
         this.settings.state = newState;
         for (var i = 0; i < this.callbacks.length; i++) {
           this.callbacks[i](newState, this);
@@ -168,14 +168,15 @@ export class WorkerProxy {
       process() {
         var msg = this.messages.pop();
         while (msg) {
-          this._worker.postMessage(msg);
+          this.#worker.postMessage(msg);
           msg = this.messages.pop();
         }
       }
     
       restart(parameters) {
         var that = this;
-        this._promise = new Promise(function(resolve, reject) {
+        // todo replace with pending.
+        this.#promise = new Promise(function(resolve, reject) {
           that.resolve = resolve;
           that.reject = reject;
         });
