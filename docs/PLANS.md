@@ -9,3 +9,5 @@ https://stackblitz.com/edit/simple-apollo-angular-example?file=app%2Fapp.module.
 
 
 Make seperate bundles for ... client and base (where thread logic goes)
+
+Need to create component for first test node...what should it be Maths again?
